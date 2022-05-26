@@ -215,7 +215,7 @@ const run = async () => {
         const result = await usersCollection.deleteOne(query);
         res.send(result)
     })
-    // ------------------------------for admin get all order -----------------------------
+    // ------------------------------for admin get order -----------------------------
 
 
 
