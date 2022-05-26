@@ -19,7 +19,7 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 // for database 
 
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
-const { async } = require('@firebase/util');
+
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.lhv3r.mongodb.net/?retryWrites=true&w=majority`;
 
 
