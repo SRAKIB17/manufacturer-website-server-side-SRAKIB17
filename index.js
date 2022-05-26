@@ -12,7 +12,7 @@ app.use(cors())
 const port = process.env.PORT || 5000;
 
 
-// for payment method 
+// for payment 
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 
@@ -161,7 +161,7 @@ const run = async () => {
         res.send(result)
     })
 
-    // ----------------------------add or remove user and admin ------------------------
+    // ---------------add or remove user and admin ------------------------
 
     app.get('/user', verifyJWT, verifyAdmin, async (req, res) => {
         const email = req.query.email;
