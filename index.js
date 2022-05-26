@@ -233,7 +233,7 @@ const run = async () => {
         res.send(result);
     })
 
-    // ____________________admin can add product this api _______________________________
+    // ____________________admin can  product this api _______________________________
     app.post('/add-product', async (req, res) => {
         const product = req.body;
         const result = await ProductsCollection.insertOne(product);
