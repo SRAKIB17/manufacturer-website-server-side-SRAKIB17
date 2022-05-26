@@ -268,7 +268,7 @@ const run = async () => {
     })
 
 
-    // FOR  payment stripe backen
+    // FOR  payment stripe back
     app.post('/create-payment-intent', verifyJWT, async (req, res) => {
         const { price } = req.body;
        
