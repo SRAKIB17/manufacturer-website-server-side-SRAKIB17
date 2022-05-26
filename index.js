@@ -46,7 +46,7 @@ const verifyJWT = (req, res, next) => {
 
 app.get('/verify-user', verifyJWT, (req, res) => {
     res.send({ message: 'user check' })
-}) 
+})
 
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 const run = async () => {
@@ -124,7 +124,7 @@ const run = async () => {
     })
 
 
-                
+
     // ___________________________for delete order of user
     app.get('/order/:id', verifyJWT, async (req, res) => {
         const id = req.params.id;
@@ -133,6 +133,19 @@ const run = async () => {
         res.send(result)
 
     })
+    // for order updata paymentIntent 
+    app.put('/order-payment/:id', verifyJWT, async (req, res) => {
+        const id = req.params.id;
+        const payment = req.body;
+        const query = { _id: ObjectId(id) }
+        const updateDoc = {
+            $set: payment
+        }
+        const result = await ordersCollection.updateOne(query, updateDoc);
+        res.send(result)
+
+    })
+
     app.delete('/order/:id', verifyJWT, async (req, res) => {
         const id = req.params.id;
 
@@ -161,7 +174,7 @@ const run = async () => {
         res.send(result)
     })
 
-    // ---------------add or remov and admin ------------------------
+    // ---------------add or remove and admin ------------------------
 
     app.get('/user', verifyJWT, verifyAdmin, async (req, res) => {
         const email = req.query.email;
@@ -207,7 +220,7 @@ const run = async () => {
             res.send(result)
         }
     })
-     
+
     app.delete('/user/:id', verifyJWT, verifyAdmin, async (req, res) => {
         const id = req.params.id;
         const query = { _id: ObjectId(id) }
@@ -233,6 +246,17 @@ const run = async () => {
         res.send(result);
     })
 
+    app.put('/order-payment-status/:id', verifyJWT, verifyAdmin, async (req, res) => {
+        const id = req.params.id;
+        const status = req.body;
+        const query = { _id: ObjectId(id) }
+        const updateDoc = {
+            $set: status
+        }
+        const result = await ordersCollection.updateOne(query, updateDoc);
+        res.send(result)
+
+    })
     // ____________________admin can  product this api _______________________________
     app.post('/add-product', async (req, res) => {
         const product = req.body;
@@ -271,7 +295,7 @@ const run = async () => {
     // FOR  payment stripe back
     app.post('/create-payment-intent', verifyJWT, async (req, res) => {
         const { price } = req.body;
-       
+
         const amount = Number(price) * 100;
         const paymentIntent = await stripe.paymentIntents.create({
             amount: amount,
