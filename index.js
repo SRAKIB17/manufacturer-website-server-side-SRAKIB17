@@ -161,7 +161,7 @@ const run = async () => {
         res.send(result)
     })
 
-    // ---------------add or remove user and admin ------------------------
+    // ---------------add or remov and admin ------------------------
 
     app.get('/user', verifyJWT, verifyAdmin, async (req, res) => {
         const email = req.query.email;
