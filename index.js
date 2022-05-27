@@ -88,13 +88,28 @@ const run = async () => {
             res.status(401).send({ message: 'unauthorize access' })
         }
     }
-    // get Product ; 
-    app.get('/products', async (req, res) => {
+    // get Product ; guest 
+    app.get('/products/:page/:skip', async (req, res) => {   
         const query = req.query;
+        const skip = parseInt(req.params.skip);
+        const page = parseInt(req.params.page);
+        console.log(page)
 
-        const products = await ProductsCollection.find(query).toArray()
-        res.send(products)
+        const total = await reviewCollection.countDocuments(query)
+        const count = (Math.ceil(parseInt(total) / skip))
+        console.log(count)
+        const products = await ProductsCollection.find(query).limit(skip).skip(skip*page).toArray();
+        res.send({products, count})
     })
+    // app.get('/review-count', async (req, res) => {
+    //     const skip = parseInt(req.query.skip);
+
+    //     const total = await reviewCollection.countDocuments()
+    //     const count = (Math.ceil(parseInt(total) / skip))
+
+    //     res.send({ count: count })
+
+    // })
 
     // get Product ; 
     app.get('/product/:id', verifyJWT, async (req, res) => {
@@ -115,7 +130,7 @@ const run = async () => {
     })
     // for get specific order
     app.get('/order', verifyJWT, async (req, res) => {
-    
+
         const query = req.query;
 
         const result = await ordersCollection.find(query).toArray()
@@ -167,9 +182,9 @@ const run = async () => {
     })
     app.get('/review-count', async (req, res) => {
         const skip = parseInt(req.query.skip);
-       
+
         const total = await reviewCollection.countDocuments()
-        const count = (Math.ceil( parseInt(total) / skip))
+        const count = (Math.ceil(parseInt(total) / skip))
 
         res.send({ count: count })
 
