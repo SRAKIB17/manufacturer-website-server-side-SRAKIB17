@@ -93,7 +93,7 @@ const run = async () => {
         const query = req.query;
         const skip = parseInt(req.params.skip);
         const page = parseInt(req.params.page);
-        console.log(page)
+ 
 
         const total = await reviewCollection.countDocuments(query)
         const count = (Math.ceil(parseInt(total) / skip))
