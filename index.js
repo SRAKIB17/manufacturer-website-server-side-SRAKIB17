@@ -115,7 +115,7 @@ const run = async () => {
     })
     // for get specific order
     app.get('/order', verifyJWT, async (req, res) => {
-
+    
         const query = req.query;
 
         const result = await ordersCollection.find(query).toArray()
@@ -164,6 +164,15 @@ const run = async () => {
         const cursor = reviewCollection.find({}).limit(skip).skip(page * skip);
         const review = await cursor.toArray()
         res.send(review)
+    })
+    app.get('/review-count', async (req, res) => {
+        const skip = parseInt(req.query.skip);
+       
+        const total = await reviewCollection.countDocuments()
+        const count = (Math.ceil( parseInt(total) / skip))
+
+        res.send({ count: count })
+
     })
     // for review 
 
